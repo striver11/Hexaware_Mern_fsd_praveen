@@ -1,0 +1,55 @@
+-- Foreign key:
+
+-- A foreign key column in a table points to a column with unique values in another table (often the primary key column) to create a way of cross-referencing the two tables. If a column is assigned a foreign key, 
+-- each row of that column must contain a value that exists in the 'foreign' column it references.
+
+-- it is nothing but referencial intigrity constraint
+-- IT IS USED TO ESTABLISH THE RELATION SHIPS BETWEEN THE TABLES
+
+-- sytax : FOREIGN KEY (COLUMS_NAME_IN_CHILD_TALBE) REFERENCES PARENT_TABLE_NAME(COLUMS_NAME_IN_PARENT_TALBE)
+
+A foreign key is a field or combination of fields in a database table that refers to the primary key of another table. 
+It establishes a relationship between two tables, allowing for data integrity and enforcing referential integrity constraints.
+
+Foreign keys are used to link related information across multiple tables in a relational database. 
+They ensure that the values in the referencing column(s) of one table exist as primary key values in the referenced column(s) of another table.
+
+
+
+CREATE DATABASE Apr2024Db;
+USE Apr2024Db;
+SHOW DATABASES;
+
+CREATE TABLE Dept(
+	deptno  INT primary key,
+    dname   VARCHAR(100) not null,
+    loc    VARCHAR(100) not null
+);
+
+CREATE TABLE EMPs(
+    empno INT PRIMARY KEY,
+	ename VARCHAR(100) NOT NULL,
+	job   VARCHAR(100) NOT NULL,
+	salary   INT NOT NULL DEFAULT 0,
+	deptno INT,
+    foreign key (deptno) references DEPT(deptno)
+);
+
+INSERT INTO Dept VALUES(10, 'Accounts', 'Hyd');
+INSERT INTO Dept VALUES(20, 'Sales', 'Pune');
+INSERT INTO Dept VALUES(40, 'Marketing', 'Mumbai');
+INSERT INTO Dept VALUES(30, 'Sales', 'Mumbai');
+
+INSERT INTO Emps VALUES(7369,'SMITH','CLERK',800, 20);
+INSERT INTO Emps VALUES(7499,'ALLEN','SALESMAN',1600,30);
+INSERT INTO Emps VALUES(7521,'WARD','SALESMAN',1250,40);
+INSERT INTO Emps VALUES(7566,'JONES','MANAGER',2975,20);
+
+select * from emps e 
+join dept d on e.deptno=d.deptno;
+
+SELECT * FROM EMPS;
+SELECT * FROM DEPT;
+
+drop table emps;
+drop table dept;
