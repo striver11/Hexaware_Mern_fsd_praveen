@@ -107,3 +107,38 @@ SELECT * FROM MaxSalaryByJob;
 -- example:
 -- select distinct(sal) from emp;
 	
+-- 7.   Create  ProductsLogs table to store the following information. 
+-- 		 Eg:	  Id, Operation, ProductId, ProductName,  Date, Time,  Message 
+-- 		
+-- 		Hint: Target the Products table.
+
+CREATE TABLE ProductsLogs (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Operation VARCHAR(50) NOT NULL,
+    ProductId INT,
+    ProductName VARCHAR(100),
+    Date DATE,
+    Time TIME,
+    Message TEXT,
+    FOREIGN KEY (ProductId) REFERENCES Products(Id)
+);
+
+-- 8.    Create  a AFTER INSERT trigger operation  and  insert the corresponding details ProductsLogs table. 
+
+CREATE TRIGGER after_product_insert
+AFTER INSERT ON Products
+FOR EACH ROW
+BEGIN
+    INSERT INTO ProductsLogs (Operation, ProductId, ProductName, Date, Time, Message)
+    VALUES ('Insert', NEW.Id, NEW.ProductName, CURDATE(), CURTIME(), 'New product inserted');
+END;
+
+
+-- 9.  Create  a AFTER DELETE trigger operation  and  insert the corresponding details ProductsLogs table with corresponding message
+CREATE TRIGGER after_product_delete
+AFTER DELETE ON Products
+FOR EACH ROW
+BEGIN
+    INSERT INTO ProductsLogs (Operation, ProductId, ProductName, Date, Time, Message)
+    VALUES ('Delete', OLD.Id, OLD.ProductName, CURDATE(), CURTIME(), 'Product deleted');
+END;
